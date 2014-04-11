@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>Jersey, Jetty, Guice Demo</display-name>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <listener>
+        <listener-class>com.eguaks.core.MyServletContextListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>Guice Filter</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Guice Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <welcome-file-list>
+        <!-- Use index.swf if present, or splash.jsp, otherwise just look for the normal defaults -->
+        <welcome-file>static/index.html</welcome-file>
+    </welcome-file-list>
+
+    <servlet>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.eguaks.resources</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--<security-constraint>-->
+        <!--<web-resource-collection>-->
+            <!--<url-pattern>/rest/admin/*</url-pattern>-->
+        <!--</web-resource-collection>-->
+        <!--<auth-constraint>-->
+            <!--<role-name>admin</role-name>-->
+        <!--</auth-constraint>-->
+    <!--</security-constraint>-->
+    <!--<security-constraint>-->
+        <!--<web-resource-collection>-->
+            <!--<url-pattern>/rest/orders/*</url-pattern>-->
+        <!--</web-resource-collection>-->
+        <!--<auth-constraint>-->
+            <!--<role-name>customer</role-name>-->
+        <!--</auth-constraint>-->
+    <!--</security-constraint>-->
+    <!--<login-config>-->
+        <!--<auth-method>BASIC</auth-method>-->
+        <!--<realm-name>my-default-realm</realm-name>-->
+    <!--</login-config>-->
+
+</web-app>
