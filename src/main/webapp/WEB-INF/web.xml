@@ -43,31 +43,6 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
-    <!--Security filters-->
-    <filter>
-        <filter-name>CsrfCreationFilter</filter-name>
-        <filter-class>com.eguaks.filters.CsrfCreationFilter</filter-class>
-    </filter>
-
-
-    <filter>
-        <filter-name>CsrfVerificationFilter</filter-name>
-        <filter-class>com.eguaks.filters.CsrfVerificationFilter</filter-class>
-    </filter>
-
-
-    <filter-mapping>
-        <filter-name>CsrfCreationFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
-    </filter-mapping>
-
-
-    <filter-mapping>
-        <filter-name>CsrfVerificationFilter</filter-name>
-        <url-pattern>/</url-pattern>
-        <servlet-name>jersey-serlvet</servlet-name>
-    </filter-mapping>
-
 
 
     <!--<security-constraint>-->
