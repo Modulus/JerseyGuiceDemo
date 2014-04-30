@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>Jersey, Jetty, Guice Demo</display-name>
-
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -44,35 +43,30 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
+    <!--Security filters-->
+    <!--<filter>-->
+        <!--<filter-name>CsrfCreationFilter</filter-name>-->
+        <!--<filter-class>com.eguaks.filters.CsrfCreationFilter</filter-class>-->
+    <!--</filter>-->
 
-    <!--CsrfGuard Context, listeners and filters-->
-    <context-param>
-        <param-name>Owasp.CsrfGuard.Config</param-name>
-        <param-value>WEB-INF/csrfguard.properties</param-value>
-    </context-param>
 
-    <context-param>
-        <param-name>Owasp.CsrfGuard.Config.Print</param-name>
-        <param-value>true</param-value>
-    </context-param>
+    <!--<filter>-->
+        <!--<filter-name>CsrfVerificationFilter</filter-name>-->
+        <!--<filter-class>com.eguaks.filters.CsrfVerificationFilter</filter-class>-->
+    <!--</filter>-->
 
-    <listener>
-        <listener-class>org.owasp.csrfguard.CsrfGuardServletContextListener</listener-class>
-    </listener>
 
-    <listener>
-        <listener-class>org.owasp.csrfguard.CsrfGuardHttpSessionListener</listener-class>
-    </listener>
+    <!--<filter-mapping>-->
+        <!--<filter-name>CsrfCreationFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
-    <filter>
-        <filter-name>CSRFGuard</filter-name>
-        <filter-class>org.owasp.csrfguard.CsrfGuardFilter</filter-class>
-    </filter>
 
-    <filter-mapping>
-        <filter-name>CSRFGuard</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <!--<filter-mapping>-->
+        <!--<filter-name>CsrfVerificationFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
 
 
     <!--<security-constraint>-->
