@@ -3,18 +3,19 @@ package com.eguaks.resources;
 import com.eguaks.types.Greeter;
 import com.eguaks.types.Person;
 import com.eguaks.types.v2.GreeterV2;
-import com.google.inject.servlet.RequestScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.Serializable;
 
 @Path("/greet")
-@RequestScoped
-public class GreeterResource {
+@SessionScoped
+public class GreeterResource implements Serializable{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GreeterResource.class);
 

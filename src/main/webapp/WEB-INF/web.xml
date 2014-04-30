@@ -58,13 +58,14 @@
 
     <filter-mapping>
         <filter-name>CsrfCreationFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>*.html</url-pattern>
     </filter-mapping>
 
 
     <filter-mapping>
         <filter-name>CsrfVerificationFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/</url-pattern>
+        <servlet-name>jersey-serlvet</servlet-name>
     </filter-mapping>
 
 
