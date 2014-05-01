@@ -5,13 +5,24 @@
     <title></title>
 </head>
 <body>
-     <div>Welcome static underling!!!</div>
+<div>Welcome static underling!!!</div>
 
 <div>
-    <form action="" >
+    <form action="">
         <input type="text" value="123"/>
         <button id="sendit" type="submit" value="Send">Send</button>
     </form>
 </div>
+
+
+<script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+    $("#sendit").click(function (event) {
+        event.preventDefault();
+        $.post("api/message", function(data){
+            alert(data);
+        });
+    });
+</script>
 </body>
 </html>
