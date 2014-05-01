@@ -86,11 +86,15 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+
+        <!--Security-->
         <dependency>
             <groupId>org.owasp</groupId>
             <artifactId>csrfguard</artifactId>
             <version>${csrfguard.version}</version>
         </dependency>
+
+
 
 
     </dependencies>
@@ -106,6 +110,20 @@
                     <webApp>
                         <contextPath>/</contextPath>
                     </webApp>
+                    <!--<connectors>-->
+                        <!--<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">-->
+                            <!--<forwarded>true</forwarded>-->
+                            <!--<port>8080</port>-->
+                        <!--</connector>-->
+                        <!--<connector  implementation="org.mortbay.jetty.ssl.SslSelectChannelConnector">-->
+                            <!--<forwarded>true</forwarded>-->
+                            <!--<port>5000</port>-->
+                            <!--<maxIdleTime>60000</maxIdleTime>-->
+                            <!--<keystore>${project.build.directory}/ssl.keystore</keystore>-->
+                            <!--<password>ssl</password>-->
+                            <!--<keyPassword>ssl</keyPassword>-->
+                        <!--</connector>-->
+                    <!--</connectors>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -117,6 +135,39 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <!--SSL-->
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>keytool-maven-plugin</artifactId>-->
+                <!--<version>1.4</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>generate-resources</phase>-->
+                        <!--<id>clean</id>-->
+                        <!--<goals>-->
+                            <!--<goal>clean</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                        <!--<phase>generate-resources</phase>-->
+                        <!--<id>genkey</id>-->
+                        <!--<goals>-->
+                            <!--<goal>generateKeyPair</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<keystore>${project.build.directory}/ssl.keystore</keystore>-->
+                    <!--<dname>cn=localhost</dname>-->
+                    <!--<keypass>ssl</keypass>-->
+                    <!--<storepass>ssl</storepass>-->
+                    <!--<alias>ssl</alias>-->
+                    <!--<keyalg>RSA</keyalg>-->
+                <!--</configuration>-->
+
+            <!--</plugin>-->
+
         </plugins>
     </build>
 
