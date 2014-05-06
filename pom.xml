@@ -150,6 +150,8 @@
                             <!--<keyPassword>ssl</keyPassword>-->
                         <!--</connector>-->
                     <!--</connectors>-->
+                    <stopKey/>
+                    <stopPort/>
                 </configuration>
             </plugin>
             <plugin>
