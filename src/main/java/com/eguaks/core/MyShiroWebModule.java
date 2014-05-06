@@ -1,9 +1,9 @@
 package com.eguaks.core;
 
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.guice.web.ShiroWebModule;
+import org.apache.shiro.realm.text.IniRealm;
 
 import javax.servlet.ServletContext;
 
@@ -19,8 +19,12 @@ public class MyShiroWebModule extends ShiroWebModule {
     @Override
     protected void configureShiroWeb() {
 
-//bindRealm().toConstructor(IniRealm.class.getConstructor(Ini.class));
-        bindRealm().to(MyShiroRealm.class).in(Singleton.class);
+        try {
+            bindRealm().toConstructor(IniRealm.class.getConstructor(Ini.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+//        bindRealm().to(MyShiroRealm.class).in(Singleton.class);
         addFilterChain("/api/**", AUTHC_BASIC);
     }
 

@@ -5,9 +5,9 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.guice.aop.ShiroAopModule;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.shiro.mgt.SecurityManager;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -21,6 +21,9 @@ public class MyServletContextListener extends GuiceServletContextListener  {
         LOGGER.info("Creating context");
         Injector injector =  Guice.createInjector(new MyShiroWebModule(servletContext), new ShiroAopModule(), new MyGuiceConfig());
         LOGGER.info("Context created successfully");
+
+//        Realm realm = new MyShiroRealm();
+
         SecurityManager securityManager = injector.getInstance(SecurityManager.class);
         SecurityUtils.setSecurityManager( securityManager);
 
