@@ -3,6 +3,7 @@ package com.eguaks.resources;
 import com.eguaks.types.Greeter;
 import com.eguaks.types.Person;
 import com.eguaks.types.v2.GreeterV2;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +44,7 @@ public class GreeterResource implements Serializable{
 
     }
 
+    @RequiresRoles("ADMIN")
     @GET
     @Produces({"text/plain"})
     public String getInfo() {

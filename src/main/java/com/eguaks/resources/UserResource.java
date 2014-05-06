@@ -5,7 +5,6 @@ import com.eguaks.data.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,7 +21,6 @@ import javax.ws.rs.core.Response;
 public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
 
-    @PermitAll
     @GET
     @Path("{id}")
     public Response getUserById(@PathParam("id")String id, @Context Request request){
