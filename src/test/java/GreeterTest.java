@@ -1,7 +1,3 @@
-import com.eguaks.types.Greeter;
-import com.eguaks.types.GreeterImpl;
-import com.eguaks.types.v2.GreeterVersion2Impl;
-import com.eguaks.types.v2.GreeterV2;
 import org.jglue.cdiunit.ActivatedAlternatives;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Test;
