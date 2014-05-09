@@ -1,7 +1,7 @@
 package com.eguaks.resources;
 
 
-import com.eguaks.data.UserRepository;
+import com.eguaks.data.FakeUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class UserResource {
     @GET
     @Path("{id}")
     public Response getUserById(@PathParam("id")String id, @Context Request request){
-        Response.ResponseBuilder rb = Response.ok(UserRepository.findOne(id));
+        Response.ResponseBuilder rb = Response.ok(FakeUserRepository.findOne(id));
         return rb.build();
     }
 

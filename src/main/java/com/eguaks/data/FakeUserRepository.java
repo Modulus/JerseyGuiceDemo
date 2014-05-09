@@ -16,7 +16,7 @@ import java.util.Optional;
 @Singleton
 @Alternative
 @Named("fakeUserRepo")
-public class FakeUserRepository {
+public class FakeUserRepository implements UserRepository {
 
     private List<User> users;
 

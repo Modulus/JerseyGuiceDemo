@@ -6,9 +6,8 @@ import com.eguaks.types.User;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by jsska on 05.05.2014.
@@ -17,7 +16,57 @@ import java.util.List;
 @Singleton
 @Alternative
 @Named("fakeMessageRepo")
-public class FakeMessageRepository {
+public class FakeMessageRepository implements MessageRepository {
+
+    private List<Message> messages;
+
+    public FakeMessageRepository(){
+        messages = createMessages();
+    }
+
+
+    @Override
+    public Message findOne(String id) {
+       Optional<Message> possibleMessage = messages.stream().
+                findFirst().
+                filter( message -> message.getId().equals(id));
+        if(possibleMessage.isPresent()){
+            return possibleMessage.get();
+        }
+        else {
+            throw new NoSuchElementException("This message does not exist");
+        }
+    }
+
+    @Override
+    public List<Message> getAll(String userId) {
+        List<Message> messagesFound = messages.stream().
+                filter( message -> message.getFrom().getId().equals(userId) || message.getTo().getId().equals(userId))
+                .map(Message::new).collect(Collectors.toList());
+
+        return messagesFound;
+
+    }
+
+    @Override
+    public void sendMessage(Message message) {
+        messages.add(message);
+    }
+
+    @Override
+    public void deleteMessage(String messageId) {
+
+        Optional<Message> possibleMessage = messages.
+                stream().
+                filter(message -> message.getId().equals(messageId)).findFirst();
+
+        if(possibleMessage.isPresent()){
+            messages.remove(possibleMessage.get());
+        }
+
+    }
+
+
 
     private static List<Message> createMessages(){
         List<Message> messages = new ArrayList<>();
@@ -32,4 +81,5 @@ public class FakeMessageRepository {
         return messages;
 
     }
+
 }

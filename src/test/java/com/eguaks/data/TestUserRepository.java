@@ -12,7 +12,7 @@ public class TestUserRepository {
 
     @Test
     public void testFindOne(){
-        User user = UserRepository.findOne("1");
+        User user = FakeUserRepository.findOne("1");
 
         assertEquals(user.getId(), "1");
         assertEquals(user.getName(), "John");
@@ -21,14 +21,14 @@ public class TestUserRepository {
 
     @Test
     public void testFindOneNull(){
-        User user = UserRepository.findByName("123");
+        User user = FakeUserRepository.findByName("123");
 
         assertNull(user);
     }
 
     @Test
     public void testFindByName(){
-        User user = UserRepository.findByName("Jane");
+        User user = FakeUserRepository.findByName("Jane");
 
         assertNotNull(user);
         assertEquals(user.getName(), "Jane");
@@ -37,7 +37,7 @@ public class TestUserRepository {
 
     @Test
     public void testFindByNameNull(){
-        User user = UserRepository.findByName("Jljlaksdf");
+        User user = FakeUserRepository.findByName("Jljlaksdf");
 
         assertNull(user);
     }
@@ -46,15 +46,15 @@ public class TestUserRepository {
 
     @Test
     public void testIsValid(){
-        assertTrue(UserRepository.isValid("John", "John1"));
+        assertTrue(FakeUserRepository.isValid("John", "John1"));
     }
 
     @Test
     public void testIsValidInvalidPassword(){
-        assertFalse(UserRepository.isValid("John", "Fjas"));
-        assertFalse(UserRepository.isValid(null, null));
-        assertFalse(UserRepository.isValid("John", null));
-        assertFalse(UserRepository.isValid(null, "John1"));
+        assertFalse(FakeUserRepository.isValid("John", "Fjas"));
+        assertFalse(FakeUserRepository.isValid(null, null));
+        assertFalse(FakeUserRepository.isValid("John", null));
+        assertFalse(FakeUserRepository.isValid(null, "John1"));
     }
 
 }
