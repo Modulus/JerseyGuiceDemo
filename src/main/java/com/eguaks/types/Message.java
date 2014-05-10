@@ -29,13 +29,19 @@ public class Message {
     public Message() {
         try {
             SecureRandom random = SecureRandom.getInstanceStrong();
-            id = Integer.toString(random.nextInt());
+            id = Integer.toHexString(random.nextInt());
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error("Failed to create random id");
         }
     }
 
     public Message(User from, User to, String header, String message, Date sent) {
+        try {
+            SecureRandom random = SecureRandom.getInstanceStrong();
+            this.id = Integer.toHexString(random.nextInt());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         this.from = from;
         this.to = to;
         this.header = header;
@@ -103,6 +109,10 @@ public class Message {
     @XmlElement
     public String getId(){
         return id;
+    }
+
+    protected void setId(String id){
+        this.id = id;
     }
 
 }

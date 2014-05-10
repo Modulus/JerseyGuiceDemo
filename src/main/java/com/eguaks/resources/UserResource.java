@@ -2,16 +2,17 @@ package com.eguaks.resources;
 
 
 import com.eguaks.data.FakeUserRepository;
+import com.eguaks.types.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.inject.Inject;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Created by jsska on 05.05.2014.
@@ -21,11 +22,32 @@ import javax.ws.rs.core.Response;
 public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
 
+    @Inject
+//    @Named("fakeUserRepo")
+    private FakeUserRepository userRepo;
+
     @GET
     @Path("{id}")
-    public Response getUserById(@PathParam("id")String id, @Context Request request){
-        Response.ResponseBuilder rb = Response.ok(FakeUserRepository.findOne(id));
-        return rb.build();
+    public User getUserById(@PathParam("id") String id, @Context Request request){
+        User user = userRepo.findOne(id);
+        LOGGER.info(String.format("Found user with id %s", user.getId()));
+
+        return user;
+    }
+
+    @GET
+    @Path("/all")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public List<User> getAll(){
+        return userRepo.getAll();
+    }
+
+//    @RequiresRoles("ADMIN")
+    @DELETE
+    @Produces({"text/plain"})
+    public String getInfo() {
+        LOGGER.info("Getting info message");
+        return "Please use request parameters to get data";
     }
 
 

@@ -1,15 +1,13 @@
 package com.eguaks.core;
 
 
-import com.google.common.collect.ImmutableSet;
+//import com.google.common.collect.ImmutableSet;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-
-import java.util.Set;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
 * Created by jsska on 06.05.2014.
@@ -21,12 +19,12 @@ public class MyShiroRealm extends AuthorizingRealm {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
         String username = (String) principals.fromRealm(getName()).iterator().next();
-        Set<String> roleNames = ImmutableSet.of();
-        if (username != null) {
-            roleNames = ImmutableSet.of("admin", "user");
-        }
-        return new SimpleAuthorizationInfo(roleNames);
-
+//        Set<String> roleNames = ImmutableSet.of();
+//        if (username != null) {
+//            roleNames = ImmutableSet.of("admin", "user");
+//        }
+//        return new SimpleAuthorizationInfo(roleNames);
+        throw new NotImplementedException();
     }
 
     @Override

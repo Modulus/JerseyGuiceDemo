@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface UserRepository {
 
-    public User findOne(String id);
+    User findOne(String id);
 
     User findByName(String username);
 

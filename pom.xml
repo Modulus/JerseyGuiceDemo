@@ -59,6 +59,15 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
+        <!--Needed for dependency injection with Weld-->
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>17.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
 
 
         <dependency>

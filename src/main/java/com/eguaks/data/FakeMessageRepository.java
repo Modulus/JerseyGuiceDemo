@@ -2,12 +2,12 @@ package com.eguaks.data;
 
 import com.eguaks.types.Message;
 import com.eguaks.types.User;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by jsska on 05.05.2014.
@@ -40,12 +40,12 @@ public class FakeMessageRepository implements MessageRepository {
 
     @Override
     public List<Message> getAll(String userId) {
-        List<Message> messagesFound = messages.stream().
-                filter( message -> message.getFrom().getId().equals(userId) || message.getTo().getId().equals(userId))
-                .map(Message::new).collect(Collectors.toList());
-
-        return messagesFound;
-
+//        List<Message> messagesFound = messages.stream().
+//                filter( message -> message.getFrom().getId().equals(userId) || message.getTo().getId().equals(userId))
+//                .map(Message::new).collect(Collectors.toList());
+//
+//        return messagesFound;
+        throw new NotImplementedException();
     }
 
     @Override

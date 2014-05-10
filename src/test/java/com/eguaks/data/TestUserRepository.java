@@ -1,18 +1,35 @@
 package com.eguaks.data;
 
 import com.eguaks.types.User;
+import org.jglue.cdiunit.ActivatedAlternatives;
+import org.jglue.cdiunit.CdiRunner;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by jsska on 05.05.2014.
  */
+@RunWith(CdiRunner.class)
+@ActivatedAlternatives(value = {FakeUserRepository.class})
 public class TestUserRepository {
+
+    @Inject
+    @Named("fakeUserRepo")
+    private UserRepository userRepo;
+
+    @Test
+    public void verifyInstance(){
+        assertTrue(userRepo.getClass().isAssignableFrom(FakeUserRepository.class));
+    }
 
     @Test
     public void testFindOne(){
-        User user = FakeUserRepository.findOne("1");
+        User user = userRepo.findOne("1");
 
         assertEquals(user.getId(), "1");
         assertEquals(user.getName(), "John");
@@ -21,14 +38,14 @@ public class TestUserRepository {
 
     @Test
     public void testFindOneNull(){
-        User user = FakeUserRepository.findByName("123");
+        User user = userRepo.findByName("123");
 
         assertNull(user);
     }
 
     @Test
     public void testFindByName(){
-        User user = FakeUserRepository.findByName("Jane");
+        User user = userRepo.findByName("Jane");
 
         assertNotNull(user);
         assertEquals(user.getName(), "Jane");
@@ -37,7 +54,7 @@ public class TestUserRepository {
 
     @Test
     public void testFindByNameNull(){
-        User user = FakeUserRepository.findByName("Jljlaksdf");
+        User user = userRepo.findByName("Jljlaksdf");
 
         assertNull(user);
     }
@@ -46,15 +63,15 @@ public class TestUserRepository {
 
     @Test
     public void testIsValid(){
-        assertTrue(FakeUserRepository.isValid("John", "John1"));
+        assertTrue(userRepo.isValid("John", "John1"));
     }
 
     @Test
     public void testIsValidInvalidPassword(){
-        assertFalse(FakeUserRepository.isValid("John", "Fjas"));
-        assertFalse(FakeUserRepository.isValid(null, null));
-        assertFalse(FakeUserRepository.isValid("John", null));
-        assertFalse(FakeUserRepository.isValid(null, "John1"));
+        assertFalse(userRepo.isValid("John", "Fjas"));
+        assertFalse(userRepo.isValid(null, null));
+        assertFalse(userRepo.isValid("John", null));
+        assertFalse(userRepo.isValid(null, "John1"));
     }
 
 }

@@ -1,21 +1,28 @@
 package com.eguaks.resources;
 
+import com.eguaks.data.MessageRepository;
 import com.google.inject.servlet.SessionScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import java.io.Serializable;
 
 /**
  * Created by Modulus on 01/05/2014.
  */
 @Path("/message")
 @SessionScoped
-public class MessageResource {
+public class MessageResource implements Serializable{
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageResource.class);
+
+    @Inject
+//    @Named("fakeMessageRepo")
+    private MessageRepository messageRepo;
 
     @Context
     SecurityContext securityContext;
