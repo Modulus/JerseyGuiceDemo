@@ -2,12 +2,18 @@ package com.eguaks.data;
 
 import com.eguaks.types.Message;
 import com.eguaks.types.User;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by jsska on 05.05.2014.
@@ -17,6 +23,8 @@ import java.util.*;
 @Alternative
 @Named("fakeMessageRepo")
 public class FakeMessageRepository implements MessageRepository {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FakeMessageRepository.class);
 
     private List<Message> messages;
 
@@ -40,12 +48,19 @@ public class FakeMessageRepository implements MessageRepository {
 
     @Override
     public List<Message> getAll(String userId) {
-//        List<Message> messagesFound = messages.stream().
-//                filter( message -> message.getFrom().getId().equals(userId) || message.getTo().getId().equals(userId))
-//                .map(Message::new).collect(Collectors.toList());
-//
-//        return messagesFound;
-        throw new NotImplementedException();
+        LOGGER.debug(String.format("Trying to find all messages for user %s", userId));
+        List<Message> messagesFound = messages.stream().
+                filter(message -> message.getFrom().getId().equals(userId) || message.getTo().getId().equals(userId))
+                .collect(Collectors.toList());
+
+        if(messagesFound == null){
+            LOGGER.trace(String.format("Found no elements"));
+        }
+        else {
+            LOGGER.trace(String.format("Found %s element(s)", messagesFound.size()));
+        }
+
+        return messagesFound;
     }
 
     @Override
@@ -72,11 +87,11 @@ public class FakeMessageRepository implements MessageRepository {
         List<Message> messages = new ArrayList<>();
         List<User> users =  FakeUserRepository.createUsers();
 
-        messages.add(new Message(users.get(0), users.get(1), "Hi", "First message", new Date()));
-        messages.add(new Message(users.get(1), users.get(0), "Re:Hi", "My reply to your first message. Hello there sir", new Date()));
-        messages.add(new Message(users.get(3), users.get(2), "Blabab", "Muhahahasdfhjksahdsa, hasdkjlfhadsf, asdfhlasdf. JALHAL?", new Date()));
-        messages.add(new Message(users.get(2), users.get(3), "Re. Blabab", "Iditio!", new Date()));
-        messages.add(new Message(users.get(3), users.get(2), "Re. Blabab", "??", new Date()));
+        messages.add(new Message(users.get(0), users.get(1), "Hi", "First message", LocalDate.now()));
+        messages.add(new Message(users.get(1), users.get(0), "Re:Hi", "My reply to your first message. Hello there sir", LocalDate.now()));
+        messages.add(new Message(users.get(3), users.get(2), "Blabab", "Muhahahasdfhjksahdsa, hasdkjlfhadsf, asdfhlasdf. JALHAL?", LocalDate.now()));
+        messages.add(new Message(users.get(2), users.get(3), "Re. Blabab", "Iditio!", LocalDate.now()));
+        messages.add(new Message(users.get(3), users.get(2), "Re. Blabab", "??", LocalDate.now()));
 
         return messages;
 

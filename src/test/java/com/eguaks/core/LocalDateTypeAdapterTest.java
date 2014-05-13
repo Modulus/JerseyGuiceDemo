@@ -1,5 +1,6 @@
 package com.eguaks.core;
 
+import com.eguaks.core.adapters.LocalDateTypeAdapter;
 import org.junit.Before;
 import org.junit.Test;
 

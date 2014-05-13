@@ -1,10 +1,8 @@
 package com.eguaks.types;
 
-import com.eguaks.core.LocalDateTypeAdapter;
+import com.eguaks.core.adapters.LocalDateTypeAdapter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
@@ -12,6 +10,8 @@ import java.time.LocalDate;
  * Created by jsska on 05.05.2014.
  */
 @XmlRootElement(name="user")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlType(propOrder = {"id", "name", "created"})
 public class User {
     private String id;
     private String name;
@@ -66,9 +66,6 @@ public class User {
         return created;
     }
 
-//SEE: http://blog.bdoughan.com/2011/05/jaxb-and-joda-time-dates-and-times.html
-//    @JsonSerialize(using = CustomDateSerializer.class)
-//    @XmlElement
     public void setCreated(LocalDate created) {
         this.created = created;
     }

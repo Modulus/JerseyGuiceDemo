@@ -1,4 +1,4 @@
-package com.eguaks.core;
+package com.eguaks.core.adapters;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDate;

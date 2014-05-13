@@ -1,29 +1,32 @@
 package com.eguaks.types;
 
+import com.eguaks.core.adapters.LocalDateTypeAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Created by jsska on 05.05.2014.
  */
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlType(propOrder = {"id", "to", "from", "header", "message", "sent", "read"})
 public class Message {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Message.class);
 
-    public String id;
+    private String id;
     private User from;
     private User to;
     private String header;
     private String message;
-    private Date sent;
+    private LocalDate sent;
     private boolean read;
 
     public Message() {
@@ -35,7 +38,7 @@ public class Message {
         }
     }
 
-    public Message(User from, User to, String header, String message, Date sent) {
+    public Message(User from, User to, String header, String message, LocalDate sent) {
         try {
             SecureRandom random = SecureRandom.getInstanceStrong();
             this.id = Integer.toHexString(random.nextInt());
@@ -48,7 +51,6 @@ public class Message {
         this.message = message;
         this.sent = sent;
     }
-
 
     @XmlElement
     public User getFrom() {
@@ -87,12 +89,13 @@ public class Message {
     }
 
 
+    @XmlJavaTypeAdapter(value=LocalDateTypeAdapter.class, type= LocalDate.class)
     @XmlElement(name = "date")
-    public Date getSent() {
+    public LocalDate getSent() {
         return sent;
     }
 
-    public void setSent(Date sent) {
+    public void setSent(LocalDate sent) {
         this.sent = sent;
     }
 
