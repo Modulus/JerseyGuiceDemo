@@ -2,12 +2,14 @@ package com.eguaks.resources;
 
 
 import com.eguaks.data.FakeUserRepository;
+import com.eguaks.data.UserRepository;
 import com.eguaks.types.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -22,9 +24,14 @@ import java.util.List;
 public class UserResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
 
+    private UserRepository userRepo;
+
+
+
     @Inject
-//    @Named("fakeUserRepo")
-    private FakeUserRepository userRepo;
+    public void setUserRepository(@Named("fakeUserRepo")UserRepository userRepository){
+        this.userRepo = userRepository;
+    }
 
     @GET
     @Path("{id}")

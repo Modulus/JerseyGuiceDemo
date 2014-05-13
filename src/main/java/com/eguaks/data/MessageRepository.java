@@ -11,9 +11,12 @@ public interface MessageRepository {
 
     Message findOne(String id);
 
+    Message findOne(String userId, String messageId);
+
     List<Message> getAll(String userId);
 
     void sendMessage(Message message);
 
     void deleteMessage(String messageId);
+
 }

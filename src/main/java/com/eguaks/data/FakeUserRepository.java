@@ -20,10 +20,10 @@ import java.util.Optional;
 @Named("fakeUserRepo")
 public class FakeUserRepository implements UserRepository {
 
-    private List<User> users;
+    private List<User> users = createUsers();
 
     public FakeUserRepository(){
-        users = createUsers();
+
     }
 
 

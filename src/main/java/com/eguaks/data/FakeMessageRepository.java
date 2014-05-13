@@ -47,6 +47,20 @@ public class FakeMessageRepository implements MessageRepository {
     }
 
     @Override
+    public Message findOne(String userId, String messageId) {
+        Optional<Message> possibleMessage = messages.
+                stream().
+                findFirst().
+                filter(message -> message.getId().equals(messageId)
+                && (message.getFrom().getId().equals(userId) || message.getTo().getId().equals(userId)));
+        if(possibleMessage.isPresent()){
+            return possibleMessage.get();
+        }
+        else
+            throw new NoSuchElementException("This message does not exist");
+    }
+
+    @Override
     public List<Message> getAll(String userId) {
         LOGGER.debug(String.format("Trying to find all messages for user %s", userId));
         List<Message> messagesFound = messages.stream().

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +25,7 @@ public class MessageResource implements Serializable{
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageResource.class);
 
     @Inject
-//    @Named("fakeMessageRepo")
+    @Named("fakeMessageRepo")
     private MessageRepository messageRepo;
 
     @Context
@@ -43,8 +44,28 @@ public class MessageResource implements Serializable{
     @Consumes(value = MediaType.TEXT_PLAIN)
     @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Message> test(@PathParam("userid")String userid/*, @Context HttpContext httpContext*/){
-        return messageRepo.getAll(userid);
+        LOGGER.debug(String.format("Trying to find messages for user with id %s", userid));
+        List<Message> messages =  messageRepo.getAll(userid);
+        if(messages != null){
+            LOGGER.debug(String.format("Found %s message(s)", messages.size()));
+        }
+        else {
+            LOGGER.debug(String.format("Found no messages for user with id %s", userid));
+        }
+        return messages;
+
     }
+
+    @GET
+    @Path("/{userid}/{messageid}")
+    @Consumes(value = MediaType.TEXT_PLAIN)
+    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Message getMessageForUser(@PathParam("userid")String userid, @PathParam("messageid")String messageid){
+        Message message = messageRepo.findOne(userid, messageid);
+
+        return message;
+    }
+
 
 
 //    @HeaderParam("X-CustomHeader")

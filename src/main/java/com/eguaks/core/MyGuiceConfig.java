@@ -6,6 +6,7 @@ import com.eguaks.data.MessageRepository;
 import com.eguaks.data.UserRepository;
 import com.eguaks.resources.MessageResource;
 import com.eguaks.resources.UserResource;
+import com.google.inject.name.Names;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import org.slf4j.Logger;
@@ -20,13 +21,8 @@ public class MyGuiceConfig extends JerseyServletModule {
         LOGGER.info("Binding types");
         bind(MessageResource.class);
         bind(UserResource.class);
-        bind(UserRepository.class).to(FakeUserRepository.class);
-        bind(MessageRepository.class).to(FakeMessageRepository.class);
-//        bind(MessageRepository.class).annotatedWith(Names.named("fakeMessageRepo")).to(FakeMessageRepository.class);
-//        bind(PersonResource.class).annotatedWith(Names.named("personResource")).to(GreeterImpl.class);
-//        bind(Greeter.class).annotatedWith(Names.named("greeterv2")).to(com.eguaks.types.v2.GreeterVersion2Impl.class);
-//        bind(GreeterV2.class).annotatedWith(Names.named("greeterv2")).to(com.eguaks.types.v2.GreeterVersion2Impl.class);
-
+        bind(UserRepository.class).annotatedWith(Names.named("fakeUserRepo")).to(FakeUserRepository.class);
+        bind(MessageRepository.class).annotatedWith(Names.named("fakeMessageRepo")).to(FakeMessageRepository.class);
         /**
          * Need to serve content above /, since / will serve static content (ie html/css/js ++)
          * */
