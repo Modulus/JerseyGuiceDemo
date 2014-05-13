@@ -28,6 +28,7 @@ public class UserResource {
 
     @GET
     @Path("{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public User getUserById(@PathParam("id") String id, @Context Request request){
         User user = userRepo.findOne(id);
         LOGGER.info(String.format("Found user with id %s", user.getId()));
@@ -37,7 +38,7 @@ public class UserResource {
 
     @GET
     @Path("/all")
-    @Produces(value = MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<User> getAll(){
         return userRepo.getAll();
     }
