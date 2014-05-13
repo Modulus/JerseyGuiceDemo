@@ -39,10 +39,10 @@ public class MessageResource implements Serializable{
     }
 
     @GET
-    @Path("{userid}")
+    @Path("/{userid}")
     @Consumes(value = MediaType.TEXT_PLAIN)
     @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<Message> test(@PathParam("userid")String userid, @Context HttpContext httpContext){
+    public List<Message> test(@PathParam("userid")String userid/*, @Context HttpContext httpContext*/){
         return messageRepo.getAll(userid);
     }
 
