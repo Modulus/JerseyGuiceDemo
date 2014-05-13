@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Modulus on 01/05/2014.
  */
-@Path("/message")
+@Path("/messages")
 @SessionScoped
 public class MessageResource implements Serializable{
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageResource.class);
