@@ -1,6 +1,9 @@
 package com.eguaks.data;
 
+import com.eguaks.annotations.WrapMethod;
 import com.eguaks.types.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
@@ -20,21 +23,28 @@ import java.util.Optional;
 @Named("fakeUserRepo")
 public class FakeUserRepository implements UserRepository {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FakeUserRepository.class);
+
     private List<User> users = createUsers();
 
     public FakeUserRepository(){
 
     }
 
-
+    /*
+    * Test AOP on
+    * */
+    @WrapMethod
     @Override
     public User findOne(String id){
-
+        LOGGER.debug(String.format("Trying to find user with id [%s]", id));
         Optional<User> match = users.stream().filter( user -> user.getId().equals(id)).distinct().findFirst();
 
         if(match.isPresent()){
+            LOGGER.debug(String.format("Found user"));
             return match.get();
         }
+        LOGGER.debug(String.format("Did not find user with id [%s]", id));
         return null;
     }
 
