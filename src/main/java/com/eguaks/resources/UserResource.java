@@ -1,9 +1,9 @@
 package com.eguaks.resources;
 
 
-import com.eguaks.data.FakeUserRepository;
 import com.eguaks.data.UserRepository;
 import com.eguaks.types.User;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +33,7 @@ public class UserResource {
         this.userRepo = userRepository;
     }
 
+    @RequiresAuthentication
     @GET
     @Path("{id}")
     @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -43,6 +44,7 @@ public class UserResource {
         return user;
     }
 
+    @RequiresAuthentication
     @GET
     @Path("/all")
     @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

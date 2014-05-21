@@ -2,6 +2,9 @@ package com.eguaks.data;
 
 import com.eguaks.annotations.WrapMethod;
 import com.eguaks.types.User;
+import org.apache.shiro.authz.Permission;
+import org.apache.shiro.authz.SimpleRole;
+import org.apache.shiro.authz.permission.WildcardPermission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,9 +12,7 @@ import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by jsska on 05.05.2014.
@@ -81,7 +82,19 @@ public class FakeUserRepository implements UserRepository {
 
     static List<User> createUsers(){
         List<User> users = new ArrayList<>();
-        users.add(new User("1", "John", "John1", LocalDate.now()));
+        Set<SimpleRole> roles = new HashSet<>();
+        SimpleRole role = new SimpleRole();
+        role.setName("ADMIN");
+        Permission permission = new WildcardPermission("*");
+        Set<Permission> permissions = new HashSet<>();
+        permissions.add(permission);
+        role.setPermissions(permissions);
+        roles.add(role);
+
+        User user1 = new User("1", "John", "John1", LocalDate.now());
+        user1.setRoles(roles);
+
+        users.add(user1);
         users.add(new User("2", "Jane", "Jane2", LocalDate.of(1981, 1, 4)));
         users.add(new User("3", "Nils", "Nils3", LocalDate.of(1972, 6, 27)));
         users.add(new User("4", "Trine", "Trine4", LocalDate.now()));

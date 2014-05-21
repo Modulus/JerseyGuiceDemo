@@ -1,10 +1,12 @@
 package com.eguaks.types;
 
 import com.eguaks.core.adapters.LocalDateTypeAdapter;
+import org.apache.shiro.authz.SimpleRole;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Created by jsska on 05.05.2014.
@@ -17,6 +19,7 @@ public class User {
     private String name;
     private String password;
     private LocalDate created;
+    private Set<SimpleRole> roles;
 
     public User(){
 
@@ -68,5 +71,13 @@ public class User {
 
     public void setCreated(LocalDate created) {
         this.created = created;
+    }
+
+    public Set<SimpleRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<SimpleRole> roles){
+        this.roles = roles;
     }
 }

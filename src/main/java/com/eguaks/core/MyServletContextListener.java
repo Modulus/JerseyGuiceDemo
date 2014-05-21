@@ -19,7 +19,12 @@ public class MyServletContextListener extends GuiceServletContextListener  {
     @Override
     protected Injector getInjector() {
         LOGGER.info("Creating context");
-        Injector injector =  Guice.createInjector(new MyShiroWebModule(servletContext), new ShiroAopModule(), new MyGuiceConfig());
+        Injector injector =  Guice.createInjector(
+                new MyShiroWebModule(servletContext),
+                new ShiroAopModule(),
+                new ResourceModule(),
+                new InterceptorsModule(),
+                new RepositoryModule());
         LOGGER.info("Context created successfully");
 
 //        Realm realm = new MyShiroRealm();

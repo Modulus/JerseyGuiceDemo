@@ -2,41 +2,78 @@ package com.eguaks.core;
 
 
 //import com.google.common.collect.ImmutableSet;
+
+import com.eguaks.types.User;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.*;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
-* Created by jsska on 06.05.2014.
-*/
+ * Created by jsska on 06.05.2014.
+ */
 public class MyShiroRealm extends AuthorizingRealm {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(MyShiroRealm.class);
+
+    private UserProvider userProvider;
+
+    public MyShiroRealm() {
+        userProvider = new UserProvider();
+    }
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        if (principals == null) {
-            throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
+        Set<String> roles			= new HashSet<String>();
+        Set<Permission>		permissions		= new HashSet<Permission>();
+        Collection<User> principalsList	= principals.byType(User.class);
+
+        if (principalsList.isEmpty()) {
+            throw new AuthorizationException("Empty principals list!");
         }
-        String username = (String) principals.fromRealm(getName()).iterator().next();
-//        Set<String> roleNames = ImmutableSet.of();
-//        if (username != null) {
-//            roleNames = ImmutableSet.of("admin", "user");
-//        }
-//        return new SimpleAuthorizationInfo(roleNames);
-        throw new NotImplementedException();
+        //LOADING STUFF FOR PRINCIPAL
+        for (User userPrincipal : principalsList) {
+
+
+                User user = this.userProvider.loadById(userPrincipal.getId());
+
+                Set<SimpleRole> userRoles	= user.getRoles();
+                for (SimpleRole r : userRoles) {
+                    roles.add(r.getName());
+                    Set<Permission> userPermissions	= r.getPermissions();
+                    userPermissions.stream().filter(permission -> !permissions.contains(permission)).forEach(permissions::add);
+                }
+
+        }
+        //THIS IS THE MAIN CODE YOU NEED TO DO !!!!
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
+        info.setRoles(roles); //fill in roles
+        info.setObjectPermissions(permissions); //add permisions (MUST IMPLEMENT SHIRO PERMISSION INTERFACE)
+
+        return info;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
 
-        String username = upToken.getUsername();
+        User user = null;
 
-        if (username == null) {
-            throw new AccountException("Null usernames are not allowed by this realm.");
+
+        user = this.userProvider.loadUserByLoginName(upToken.getUsername());
+//
+
+        if (user == null) {
+            throw new AuthenticationException("Login name [" + upToken.getUsername() + "] not found!");
         }
-        String password = "password";
-        return new SimpleAuthenticationInfo(username, password, this.getName());
+        LOGGER.info("Found user with username [{}]", upToken.getUsername());
+
+        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 }
