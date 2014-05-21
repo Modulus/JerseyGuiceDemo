@@ -73,6 +73,8 @@ public class User {
         this.created = created;
     }
 
+
+    @XmlTransient
     public Set<SimpleRole> getRoles() {
         return roles;
     }
