@@ -31,7 +31,7 @@ public class Message {
 
     public Message() {
         try {
-            SecureRandom random = SecureRandom.getInstanceStrong();
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             id = Integer.toHexString(random.nextInt());
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error("Failed to create random id");
@@ -40,7 +40,7 @@ public class Message {
 
     public Message(User from, User to, String header, String message, LocalDate sent) {
         try {
-            SecureRandom random = SecureRandom.getInstanceStrong();
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             this.id = Integer.toHexString(random.nextInt());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
