@@ -43,45 +43,83 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
-    <!--<filter>-->
-        <!--<filter-name>basicHttpAuthenticationFilter</filter-name>-->
-        <!--<filter-class>org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter</filter-class>-->
-    <!--</filter>-->
 
-    <!--<filter-mapping>-->
-        <!--<filter-name>basicHttpAuthenticationFilter</filter-name>-->
-        <!--<url-pattern>/</url-pattern>-->
-    <!--</filter-mapping>-->
+    <!--OWASP-->
+    <listener>
+        <listener-class>org.owasp.csrfguard.CsrfGuardHttpSessionListener</listener-class>
+    </listener>
 
-    <!--Security filters-->
-    <!--<filter>-->
-        <!--<filter-name>csrfGuardFilter</filter-name>-->
-        <!--<filter-class>org.owasp.csrfguard.CsrfGuardFilter</filter-class>-->
-    <!--</filter>-->
+    <listener>
+        <listener-class>org.owasp.csrfguard.CsrfGuardServletContextListener</listener-class>
+    </listener>
 
-    <!--<filter-mapping>-->
-        <!--<filter-name>csrfGuardFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
+    <context-param>
+        <param-name>Owasp.CsrfGuard.Config</param-name>
+        <param-value>WEB-INF/Owasp.CsrfGuard.properties</param-value>
+    </context-param>
 
-    <!--Shiro config-->
-    <!--<listener>-->
-        <!--<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>-->
-    <!--</listener>-->
+    <context-param>
+        <param-name>Owasp.CsrfGuard.Config.Print</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
-    <!--<filter>-->
-        <!--<filter-name>ShiroFilter</filter-name>-->
-        <!--<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>-->
-    <!--</filter>-->
 
-    <!--<filter-mapping>-->
-        <!--<filter-name>ShiroFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-        <!--<dispatcher>REQUEST</dispatcher>-->
-        <!--<dispatcher>FORWARD</dispatcher>-->
-        <!--<dispatcher>INCLUDE</dispatcher>-->
-        <!--<dispatcher>ERROR</dispatcher>-->
-    <!--</filter-mapping>-->
+
+    <filter>
+        <filter-name>CSRFGuard</filter-name>
+        <filter-class>org.owasp.csrfguard.CsrfGuardFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CSRFGuard</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>CSRFInjectionFilter</filter-name>
+        <filter-class>com.eguaks.core.CSRFInjectionFilter</filter-class>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>CSRFInjectionFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+    <!--AJAX Support-->
+    <servlet>
+        <servlet-name>JavaScriptServlet</servlet-name>
+        <servlet-class>org.owasp.csrfguard.servlet.JavaScriptServlet</servlet-class>
+        <init-param>
+            <param-name>source-file</param-name>
+            <param-value>static/script/csrfguard.js</param-value>
+        </init-param>
+        <init-param>
+            <param-name>inject-into-forms</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>inject-into-attributes</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>domain-strict</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>referer-pattern</param-name>
+            <param-value>http://localhost:80.*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>x-requested-with</param-name>
+            <param-value>OWASP CSRFGuard Project</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JavaScriptServlet</servlet-name>
+        <url-pattern>/JavaScriptServlet</url-pattern>
+    </servlet-mapping>
+
+
 
 
 
