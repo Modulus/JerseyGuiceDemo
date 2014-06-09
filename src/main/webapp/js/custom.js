@@ -9,13 +9,26 @@ $(document).ready(function(){
         });
     });
 
-    $.ajax({
-        url: "api/users/all",
-        success: function(data){
-            console.log(data)
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    })
+    this.users = new UserViewModel();
+    this.users.fetch()
+
 });
+
+function UserViewModel(){
+    self = this;
+    self.data = ko.observableArray([])
+    self.fetch = function(){
+        $.ajax({
+            url: "api/users/all",
+            success: function(data){
+                data.user.forEach(function(row){
+                   self.data.push(row)
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+}

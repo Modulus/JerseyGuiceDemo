@@ -1,19 +1,26 @@
 package com.eguaks.resources;
 
 import com.eguaks.data.MessageRepository;
+import com.eguaks.data.UserRepository;
 import com.eguaks.types.Message;
+import com.eguaks.types.User;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.xml.ws.spi.http.HttpContext;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -28,15 +35,34 @@ public class MessageResource implements Serializable{
     @Named("fakeMessageRepo")
     private MessageRepository messageRepo;
 
+    @Inject
+    @Named("fakeUserRepo")
+    private UserRepository userRepository;
+
     @Context
     SecurityContext securityContext;
 
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Consumes(value = {MediaType.APPLICATION_FORM_URLENCODED})
-    public String echo(@FormParam("message") String message){
+    public Response sendMessage(@FormParam("header") String header ,
+                                @FormParam("message") String message,
+                                @FormParam("to") String to,
+                                @Context HttpServletRequest context){
         LOGGER.debug("Inside");
-        return "ahahahah";
+
+        User currentUser = (User)SecurityUtils.getSubject().getPrincipal();
+        if(currentUser != null && to != null){
+            if(userRepository.findOne(currentUser.getId()) != null && userRepository.findOne(to.toString()) != null){
+                User recipient = userRepository.findOne(to.toString());
+                Message msg = new Message(currentUser, recipient, header, message, LocalDate.now());
+
+                messageRepo.sendMessage(msg);
+                return Response.ok().build();
+
+            }
+        }
+        return Response.noContent().build();
     }
 
     @GET
