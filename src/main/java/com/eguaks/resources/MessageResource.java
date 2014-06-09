@@ -5,6 +5,7 @@ import com.eguaks.data.UserRepository;
 import com.eguaks.types.Message;
 import com.eguaks.types.User;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ import java.util.List;
 /**
  * Created by Modulus on 01/05/2014.
  */
+
 @Path("/messages")
 @SessionScoped
 public class MessageResource implements Serializable{
@@ -42,7 +44,8 @@ public class MessageResource implements Serializable{
     @Context
     SecurityContext securityContext;
 
-    @POST
+    @RequiresAuthentication
+    @PUT
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Consumes(value = {MediaType.APPLICATION_FORM_URLENCODED})
     public Response sendMessage(@FormParam("header") String header ,
@@ -65,6 +68,7 @@ public class MessageResource implements Serializable{
         return Response.noContent().build();
     }
 
+    @RequiresAuthentication
     @GET
     @Path("/{userid}")
     @Consumes(value = MediaType.TEXT_PLAIN)
@@ -82,6 +86,7 @@ public class MessageResource implements Serializable{
 
     }
 
+    @RequiresAuthentication
     @GET
     @Path("/{userid}/{messageid}")
     @Consumes(value = MediaType.TEXT_PLAIN)

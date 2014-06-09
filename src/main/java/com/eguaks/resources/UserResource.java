@@ -3,7 +3,9 @@ package com.eguaks.resources;
 
 import com.eguaks.data.UserRepository;
 import com.eguaks.types.User;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -52,12 +55,28 @@ public class UserResource {
         return userRepo.getAll();
     }
 
-//    @RequiresRoles("ADMIN")
+    @RequiresRoles("ADMIN")
     @DELETE
     @Produces({"text/plain"})
     public String getInfo() {
         LOGGER.info("Getting info message");
         return "Please use request parameters to get data";
+    }
+
+    @RequiresAuthentication
+    @POST
+    @Path("{id}/caption")
+    public Response changeCaption(@FormParam("caption") String caption, @PathParam("id") String id){
+        if(id != null && userRepo.findOne(id) != null){
+            User current = userRepo.findOne(id);
+            User actual = (User)SecurityUtils.getSubject().getPrincipal();
+            if(current.equals(actual)){
+                actual.setCaption(caption);
+                userRepo.update(actual);
+                return Response.ok().build();
+            }
+        }
+        return Response.noContent().build();
     }
 
 

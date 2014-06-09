@@ -16,4 +16,6 @@ public interface UserRepository {
     boolean isValid(String name, String password);
 
     List<User> getAll();
+
+    void update(User user);
 }

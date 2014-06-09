@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -26,7 +27,7 @@ public class FakeUserRepository implements UserRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FakeUserRepository.class);
 
-    private List<User> users = createUsers();
+    private static List<User> users = createUsers();
 
     public FakeUserRepository(){
 
@@ -77,6 +78,16 @@ public class FakeUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         return users;
+    }
+
+    @Override
+    public void update(User user) {
+        List<User> users = createUsers();
+        Optional<User> actual = users.stream().filter( u -> u.getId().equals(user.getId())).findFirst();
+        if(actual.isPresent()){
+            User actualUser = actual.get();
+            actualUser.setCaption(user.getCaption());
+        }
     }
 
 
