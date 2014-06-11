@@ -10,6 +10,7 @@
         <listener-class>com.eguaks.core.MyServletContextListener</listener-class>
     </listener>
 
+    <!--This is needed so shiro will filter from root an so forth-->
     <filter>
         <filter-name>Guice Filter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>

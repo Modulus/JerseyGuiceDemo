@@ -27,8 +27,6 @@ public class MyServletContextListener extends GuiceServletContextListener  {
                 new RepositoryModule());
         LOGGER.info("Context created successfully");
 
-//        Realm realm = new MyShiroRealm();
-
         SecurityManager securityManager = injector.getInstance(SecurityManager.class);
         SecurityUtils.setSecurityManager( securityManager);
 

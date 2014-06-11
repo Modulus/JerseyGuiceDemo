@@ -35,7 +35,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         Collection<User> principalsList	= principals.byType(User.class);
 
         if (principalsList.isEmpty()) {
-            throw new AuthorizationException("Empty principals list!");
+            throw new AuthorizationException("Access denied!");
         }
         //LOADING STUFF FOR PRINCIPAL
         for (User userPrincipal : principalsList) {
@@ -44,11 +44,14 @@ public class MyShiroRealm extends AuthorizingRealm {
                 User user = this.userProvider.loadById(userPrincipal.getId());
 
                 Set<SimpleRole> userRoles	= user.getRoles();
-                for (SimpleRole r : userRoles) {
-                    roles.add(r.getName());
-                    Set<Permission> userPermissions	= r.getPermissions();
-                    userPermissions.stream().filter(permission -> !permissions.contains(permission)).forEach(permissions::add);
+                if(userRoles != null){
+                    for (SimpleRole r : userRoles) {
+                        roles.add(r.getName());
+                        Set<Permission> userPermissions	= r.getPermissions();
+                        userPermissions.stream().filter(permission -> !permissions.contains(permission)).forEach(permissions::add);
+                    }
                 }
+
 
         }
         //THIS IS THE MAIN CODE YOU NEED TO DO !!!!
@@ -63,10 +66,9 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
 
-        User user = null;
 
 
-        user = this.userProvider.loadUserByLoginName(upToken.getUsername());
+       User user = this.userProvider.loadUserByLoginName(upToken.getUsername());
 //
 
         if (user == null) {
